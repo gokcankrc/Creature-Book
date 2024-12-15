@@ -12,9 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0900edcb5b4604839b827cec685954, type: 3}
   m_Name: Creature 2-2
   m_EditorClassIdentifier: 
-  health: 20
-  damage: 2
-  sprite: {fileID: 21300000, guid: 6ebd1918e4eb2a04994a623ac2b19509, type: 3}
+  displayName: Creature 2-2
+  stats:
+    healthMax:
+      baseValue: 100
+      additiveMult: 0
+      multiplicativeMult: 1
+    healthCurrent: 0
+    damage:
+      baseValue: 4
+      additiveMult: 0
+      multiplicativeMult: 1
+    isDead: 0
+  sprite: {fileID: 21300000, guid: 868b888f3d78c32419347506d66dcc8d, type: 3}
   nextEvo: {fileID: 11400000, guid: a1dcadf0aa9e77249b5ae965fc4b073d, type: 2}
   energyForNextEvo:
     blue: 2

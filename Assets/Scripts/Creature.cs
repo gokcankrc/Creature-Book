@@ -1,22 +1,54 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
+using Logger = Ky.Logger;
 
-public class Creature : MonoBehaviour, ICombattant
+public class Creature : EntityBase
 {
     // TODO: Skills
     // TODO: Selecting
     // TODO: Popups
-    public float Health { get; set; }
     public CreatureData creatureData;
 
-    public void TakeDamage(ICombattant attacker, Damage damage)
+    private bool hasTurn;
+    private bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
+
+    public override void TakeDamage(ICombattant attacker, Damage damage)
     {
-        throw new System.NotImplementedException();
+        if (!CanTakeDamage()) return;
+        base.TakeDamage(attacker, damage);
+        if (IsDead)
+        {
+            Logger.Log($"Creature death stuff here");
+        }
     }
 
-    public void Attack(ICombattant opponent)
+    public void Act(ICombattantGroup opponents, ICombatAction action)
     {
-        throw new System.NotImplementedException();
+        if (!CanAct) return;
+        action.Act(this, opponents);
+        PlayerManager.I.CreatureUsedTurn(this);
+        hasTurn = false;
+    }
+
+    public void ReadyToAct()
+    {
+        hasTurn = true;
+    }
+
+    public void SetDataAndReset(CreatureData newCreatureData)
+    {
+        creatureData = newCreatureData;
+        Reset();
+    }
+
+    public void Reset()
+    {
+        Stats = creatureData.stats.DeepCopy();
+        Stats.SetHealthMax();
+        gameObject.name = creatureData.displayName;
+        image.sprite = creatureData.sprite;
+        image.SetNativeSize();
     }
 
     [Button]

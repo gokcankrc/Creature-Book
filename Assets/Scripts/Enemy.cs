@@ -1,16 +1,14 @@
-using UnityEngine;
-
-public class Enemy : MonoBehaviour, ICombattant
+public class Enemy : EntityBase
 {
-    public float Health { get; set; }
-
-    public void TakeDamage(ICombattant attacker, Damage damage)
+    public override void TakeDamage(ICombattant attacker, Damage damage)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Attack(ICombattant opponent)
-    {
-        throw new System.NotImplementedException();
+        if (!CanTakeDamage()) return;
+        base.TakeDamage(attacker, damage);
+        if (Stats.isDead)
+        {
+            CombatManager.I.CombatEnded();
+            Destroy(gameObject);
+            // todo: give rewards
+        }
     }
 }
