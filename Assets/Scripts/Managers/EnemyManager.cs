@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Ky;
 using UnityEngine;
+using Logger = Ky.Logger;
 
 public class EnemyManager : Singleton<EnemyManager>, ICombattantGroup
 {
@@ -34,6 +35,7 @@ public class EnemyManager : Singleton<EnemyManager>, ICombattantGroup
     public void ItIsYourTurn(ICombattantGroup opponent)
     {
         Opponent = opponent;
+        Logger.Log($"<color=red>Enemy Turn</color>", Logger.DomainType.System);
         StartCoroutine(Delayed());
 
         IEnumerator Delayed()

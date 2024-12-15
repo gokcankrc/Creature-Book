@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Ky;
 using UnityEngine;
+using Logger = Ky.Logger;
 
 public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 {
@@ -47,6 +48,7 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
     public void ItIsYourTurn(ICombattantGroup opponent)
     {
+        Logger.Log($"<color=blue>Player Turn</color>", Logger.DomainType.System);
         Opponent = opponent;
         actsLeft = 3;
         TopCreature.ReadyToAct();

@@ -23,10 +23,10 @@ public class Creature : Entity
         }
     }
 
-    public void Act(ICombattantGroup opponents, ICombatAction action)
+    public override void Act(ICombattantGroup opponents, ICombatAction action)
     {
         if (!CanAct) return;
-        action.Act(this, opponents);
+        base.Act(opponents, action);
         PlayerManager.I.CreatureUsedTurn(this);
         hasTurn = false;
     }
