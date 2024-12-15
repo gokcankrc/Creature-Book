@@ -1,6 +1,16 @@
 public class Enemy : Entity
 {
     public EnergyBundle reward;
+    private EnemyData enemyData;
+
+    protected override EntityData EntityData => enemyData;
+
+    public void SetDataAndReset(EnemyData newEnemyData)
+    {
+        enemyData = newEnemyData;
+        Reset();
+    }
+
     public override void TakeDamage(ICombattant attacker, Damage damage)
     {
         if (!CanTakeDamage()) return;
@@ -12,14 +22,10 @@ public class Enemy : Entity
             Destroy(gameObject);
         }
     }
-    public override void SetDataAndReset(EnemyData newEnemy)
+
+    public override void Reset()
     {
-        reward = newEnemy.reward;
-        Stats = newEnemy.stats.DeepCopy();
-        Stats.SetHealthMax();
-        gameObject.name = newEnemy.displayName;
-        image.sprite = newEnemy.sprite;
-        image.SetNativeSize();
-        healthBar.Initialize(this);
+        base.Reset();
+        reward = enemyData.reward;
     }
 }

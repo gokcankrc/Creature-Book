@@ -14,6 +14,7 @@ public class EnemyManager : Singleton<EnemyManager>, ICombattantGroup
 
     public ICombattant Main => currentEnemy;
     public List<ICombattant> Side => new();
+    public List<ICombattant> All => new() { currentEnemy };
     public ICombattantGroup Opponent { get; set; }
 
     protected override void Awake()
