@@ -12,4 +12,14 @@ public class Enemy : Entity
             Destroy(gameObject);
         }
     }
+    public override void SetDataAndReset(EnemyData newEnemy)
+    {
+        reward = newEnemy.reward;
+        Stats = newEnemy.stats.DeepCopy();
+        Stats.SetHealthMax();
+        gameObject.name = newEnemy.displayName;
+        image.sprite = newEnemy.sprite;
+        image.SetNativeSize();
+        healthBar.Initialize(this);
+    }
 }

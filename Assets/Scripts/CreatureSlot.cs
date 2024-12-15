@@ -7,6 +7,7 @@ public class CreatureSlot : EntitySlot
     public void Initialize(Creature newCreature)
     {
         creature = newCreature;
+        creature.currentSlot = this;
         Reset();
     }
 
@@ -21,6 +22,7 @@ public class CreatureSlot : EntitySlot
         if (GameManager.gameState == GameManager.State.InCombat) return;
 
         (a.creature, b.creature) = (b.creature, a.creature);
+        (a.creature.currentSlot, b.creature.currentSlot) = (a,b);
         a.Reset();
         b.Reset();
     }
