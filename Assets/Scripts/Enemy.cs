@@ -1,4 +1,4 @@
-public class Enemy : EntityBase
+public class Enemy : Entity
 {
     public override void TakeDamage(ICombattant attacker, Damage damage)
     {

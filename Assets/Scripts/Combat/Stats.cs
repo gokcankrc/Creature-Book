@@ -8,10 +8,15 @@ public class Stats
     public float healthCurrent;
     public AdvancedNumber damage;
     public bool isDead = false;
+    
+    public Action onHealthChanged;
+    
+    public float HealthRatio => healthCurrent / healthMax.Calculate();
 
     public void ChangeHealth(float change)
     {
         healthCurrent += change;
+        onHealthChanged?.Invoke();
         isDead = healthCurrent <= 0;
     }
 

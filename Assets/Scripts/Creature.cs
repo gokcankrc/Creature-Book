@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Logger = Ky.Logger;
 
-public class Creature : EntityBase
+public class Creature : Entity
 {
     // TODO: Skills
     // TODO: Selecting

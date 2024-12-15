@@ -3,9 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Logger = Ky.Logger;
 
-public abstract class EntityBase : MonoBehaviour, ICombattant
+public abstract class Entity : MonoBehaviour, ICombattant
 {
     public Image image;
+    public HealthBar healthBar;
     [ShowInInspector] public Stats Stats { get; protected set; }
 
     public GameObject GameObject => gameObject;
@@ -19,6 +20,7 @@ public abstract class EntityBase : MonoBehaviour, ICombattant
         gameObject.name = newEnemy.displayName;
         image.sprite = newEnemy.sprite;
         image.SetNativeSize();
+        healthBar.Initialize(this);
     }
 
     public virtual bool CanTakeDamage()
