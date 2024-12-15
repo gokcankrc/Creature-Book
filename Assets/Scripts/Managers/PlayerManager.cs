@@ -11,7 +11,7 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
     public ICombattant Main => MidCreature;
     public List<ICombattant> Side => new() { TopCreature, BottomCreature };
-    public List<ICombattant> All => new() { Slots[1].creature, Slots[2].creature, Slots[3].creature };
+    public List<ICombattant> All => new() { TopCreature, MidCreature, BottomCreature };
     public List<Creature> AllCombatingCreatures => new() { TopCreature, MidCreature, BottomCreature };
     public ICombattantGroup Opponent { get; set; }
     /*

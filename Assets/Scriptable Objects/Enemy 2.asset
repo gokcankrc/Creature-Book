@@ -19,8 +19,20 @@ MonoBehaviour:
       additiveMult: 0
       multiplicativeMult: 1
     healthCurrent: 0
-    damage:
-      baseValue: 40
+    physicalDamage:
+      baseValue: 10
+      additiveMult: 0
+      multiplicativeMult: 1
+    magicDamage:
+      baseValue: 10
+      additiveMult: 0
+      multiplicativeMult: 1
+    armor:
+      baseValue: 0
+      additiveMult: 0
+      multiplicativeMult: 1
+    magicArmor:
+      baseValue: 0
       additiveMult: 0
       multiplicativeMult: 1
     isDead: 0

@@ -1,5 +1,7 @@
 public class Damage
 {
     //this might want to handle weird skills
-    public float damage;
+    public float mult = 1f;
+    public float magicDamage;
+    public float physicalDamage;
 }

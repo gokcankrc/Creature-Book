@@ -6,7 +6,10 @@ public class Stats
 {
     public AdvancedNumber healthMax;
     public float healthCurrent;
-    public AdvancedNumber damage;
+    public AdvancedNumber physicalDamage;
+    public AdvancedNumber magicDamage;
+    public AdvancedNumber armor;
+    public AdvancedNumber magicArmor;
     public bool isDead = false;
     
     public Action onHealthChanged;
@@ -30,7 +33,10 @@ public class Stats
         var copy = new Stats();
         copy.healthMax = healthMax;
         copy.healthCurrent = healthCurrent;
-        copy.damage = damage;
+        copy.physicalDamage = physicalDamage;
+        copy.magicDamage = magicDamage;
+        copy.armor = armor;
+        copy.magicArmor = magicArmor;
         return copy;
     }
 }
