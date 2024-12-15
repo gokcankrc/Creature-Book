@@ -1,5 +1,6 @@
 public class Enemy : Entity
 {
+    public EnergyBundle reward;
     public override void TakeDamage(ICombattant attacker, Damage damage)
     {
         if (!CanTakeDamage()) return;
@@ -7,8 +8,8 @@ public class Enemy : Entity
         if (Stats.isDead)
         {
             CombatManager.I.CombatEnded();
+            ResourceManager.I.Add(this.reward);
             Destroy(gameObject);
-            // todo: give rewards
         }
     }
 }
