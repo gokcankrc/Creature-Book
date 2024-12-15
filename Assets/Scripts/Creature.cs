@@ -1,24 +1,65 @@
+using System;
+using Ky;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Creature : MonoBehaviour, ICombattable
+public class Creature : MonoBehaviour, ICombattant
 {
     // TODO: Skills
     // TODO: Selecting
     // TODO: Popups
     public float Health { get; set; }
+    public CreatureData creatureData;
 
-    public void TakeDamage(ICombattable attacker, Damage damage)
+    public void TakeDamage(ICombattant attacker, Damage damage)
     {
         throw new System.NotImplementedException();
     }
 
-    public void Attack(ICombattable opponent)
+    public void Attack(ICombattant opponent)
     {
         throw new System.NotImplementedException();
+    }
+
+    [Button]
+    public void DebugEvolve()
+    {
+        
     }
 }
 
-public class GameManager : MonoBehaviour { }
+public class CreatureData : EntityData
+{
+    public CreatureData nextEvo;
+    public EnergyBundle energyForNextEvo;
+}
+
+[Serializable]
+public class EnergyBundle
+{
+    public int blue;
+    public int red;
+    public int green;
+}
+
+public class EnemyData : EntityData { }
+
+public abstract class EntityData : ScriptableObject
+{
+    public float health;
+    public float damage;
+    public Sprite sprite;
+}
+
+public class GameManager : Singleton<GameManager>
+{
+    private Action gameInitialized;
+
+    private void Start()
+    {
+        gameInitialized?.Invoke();
+    }
+}
 
 public class CombatManager : MonoBehaviour
 {
@@ -27,16 +68,16 @@ public class CombatManager : MonoBehaviour
     public static Creature currentCreature;
 }
 
-public class Enemy : MonoBehaviour, ICombattable
+public class Enemy : MonoBehaviour, ICombattant
 {
     public float Health { get; set; }
 
-    public void TakeDamage(ICombattable attacker, Damage damage)
+    public void TakeDamage(ICombattant attacker, Damage damage)
     {
         throw new System.NotImplementedException();
     }
 
-    public void Attack(ICombattable opponent)
+    public void Attack(ICombattant opponent)
     {
         throw new System.NotImplementedException();
     }
@@ -44,11 +85,11 @@ public class Enemy : MonoBehaviour, ICombattable
 
 public class EnemyManager : MonoBehaviour { }
 
-public interface ICombattable
+public interface ICombattant
 {
     public float Health { get; set; }
-    public void TakeDamage(ICombattable attacker, Damage damage);
-    public void Attack(ICombattable opponent);
+    public void TakeDamage(ICombattant attacker, Damage damage);
+    public void Attack(ICombattant opponent);
 }
 
 public class Damage
