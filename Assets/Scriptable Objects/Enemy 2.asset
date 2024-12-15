@@ -25,3 +25,8 @@ MonoBehaviour:
       multiplicativeMult: 1
     isDead: 0
   sprite: {fileID: 21300000, guid: 110553ed0b2a96348aa05643078b5da5, type: 3}
+  reward:
+    blue: 0
+    red: 15
+    green: 0
+    brown: 0

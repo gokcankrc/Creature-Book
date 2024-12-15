@@ -17,6 +17,7 @@ public class CombatManager : Singleton<CombatManager>
     {
         EnemyManager.I.Opponent = PlayerManager.I;
         PlayerManager.I.Opponent = EnemyManager.I;
+        PlayerManager.I.GetFightingCreatures();
         currentGroup = PlayerManager.I;
         GameManager.I.ChangeState(GameManager.State.InCombat);
         NextTurn();

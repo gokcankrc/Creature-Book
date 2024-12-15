@@ -11,13 +11,20 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
     private int actsLeft;
 
-    public List<CreatureSlot> Slots => CreatureSlotReferencer.I.slots;
+    
     public ICombattant Main => MidCreature;
     public List<ICombattant> Side => new() { TopCreature, BottomCreature };
     public ICombattantGroup Opponent { get; set; }
+    /*
+    public List<CreatureSlot> Slots => CreatureSlotReferencer.I.slots;
     public Creature TopCreature => Slots[0].creature;
     public Creature MidCreature => Slots[1].creature;
     public Creature BottomCreature => Slots[2].creature;
+    */
+    public List<CreatureSlot> Slots;
+    public Creature TopCreature;
+    public Creature MidCreature;
+    public Creature BottomCreature;
 
     protected override void Awake()
     {
@@ -25,9 +32,16 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
         GameManager.gameInitialized += OnGameInitialized;
     }
+    public void GetFightingCreatures(){
+        Slots = CreatureSlotReferencer.I.slots;
+        TopCreature = Slots[0].creature;
+        MidCreature = Slots[1].creature;
+        BottomCreature = Slots[2].creature;
+    }
 
     private void OnGameInitialized()
     {
+        PlayerManager.I.GetFightingCreatures();
         var minIndex = Mathf.Min(Slots.Count, creatureDatas.Count);
         if (minIndex != 6)
             Debug.LogError($"Either slots or creatures are not enough");

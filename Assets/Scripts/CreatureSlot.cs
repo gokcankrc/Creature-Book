@@ -25,5 +25,6 @@ public class CreatureSlot : EntitySlot
         (a.creature.currentSlot, b.creature.currentSlot) = (a,b);
         a.Reset();
         b.Reset();
+        PlayerManager.I.GetFightingCreatures();
     }
 }
