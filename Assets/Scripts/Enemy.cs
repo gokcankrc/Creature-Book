@@ -1,13 +1,8 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Creature : MonoBehaviour, ICombattant
+public class Enemy : MonoBehaviour, ICombattant
 {
-    // TODO: Skills
-    // TODO: Selecting
-    // TODO: Popups
     public float Health { get; set; }
-    public CreatureData creatureData;
 
     public void TakeDamage(ICombattant attacker, Damage damage)
     {
@@ -18,7 +13,4 @@ public class Creature : MonoBehaviour, ICombattant
     {
         throw new System.NotImplementedException();
     }
-
-    [Button]
-    public void DebugEvolve() { }
 }

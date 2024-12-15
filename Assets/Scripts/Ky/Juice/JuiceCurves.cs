@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ky.Juice
 {
-    [CreateAssetMenu(menuName = "Juices/Juice Curves", fileName = "Juice Curves")]
+    [CreateAssetMenu(menuName = "Ky/Juice Curves", fileName = "Juice Curves")]
     public class JuiceCurves : ScriptableObject
     {
         [Space] public bool effectsPosition = false;
