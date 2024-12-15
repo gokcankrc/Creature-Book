@@ -50,11 +50,35 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
         gameObject.name = creatureData.displayName;
         image.sprite = creatureData.sprite;
         image.SetNativeSize();
-        //transform.localPosition = Vector3.zero;
+    }
+    bool CanEvolve (bool ignoreResources = false){
+        if (ignoreResources){
+            return (this.creatureData.nextEvo != null);
+        }
+        else {
+            return (this.creatureData.nextEvo != null && ResourceManager.I.IsHigher(this.creatureData.energyForNextEvo));
+        }
+        
+
     }
 
     [Button]
-    public void DebugEvolve() { }
+    public void DebugEvolve() { 
+        this.Evolve(false);
+    }
+    public void Evolve (bool ignoreResources = false){
+        if (GameManager.gameState == GameManager.State.InCombat) return;
+        if (this.CanEvolve(ignoreResources)){
+            if (ignoreResources){
+                this.creatureData = this.creatureData.nextEvo;
+            }
+            else {
+                ResourceManager.I.Subtract(this.creatureData.energyForNextEvo);
+                this.creatureData = this.creatureData.nextEvo;
+            }
+            this.Reset();
+        }
+    }
     public void OnBeginDrag(PointerEventData data)
     {
         
