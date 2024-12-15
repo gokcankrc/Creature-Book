@@ -92,6 +92,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5763974118424004355, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5763974118424004355, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -84
+      objectReference: {fileID: 0}
     - target: {fileID: 6979141717766532744, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -136,6 +144,7 @@ MonoBehaviour:
   image: {fileID: 3191303552347370308}
   healthBar: {fileID: 8303484301381422199}
   creatureData: {fileID: 0}
+  currentSlot: {fileID: 0}
 --- !u!114 &8303484301381422199 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4587139679191650747, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}

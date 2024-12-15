@@ -20,6 +20,8 @@ public class CombatManager : Singleton<CombatManager>
         PlayerManager.I.GetFightingCreatures();
         currentGroup = PlayerManager.I;
         GameManager.I.ChangeState(GameManager.State.InCombat);
+        EncounterManager.I.LevelIndex++;
+        
         NextTurn();
     }
 
@@ -33,5 +35,6 @@ public class CombatManager : Singleton<CombatManager>
     public void CombatEnded()
     {
         GameManager.I.ChangeState(GameManager.State.Waiting);
+        BackroundManager.I.TurnOnColoredParts(EncounterManager.I.LevelIndex);
     }
 }
