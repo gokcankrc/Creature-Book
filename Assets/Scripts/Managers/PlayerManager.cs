@@ -9,11 +9,10 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
     public Skill debugCreatureAttack;
     public List<CreatureData> creatureDatas;
 
-    private int actsLeft;
-
-    
     public ICombattant Main => MidCreature;
     public List<ICombattant> Side => new() { TopCreature, BottomCreature };
+    public List<ICombattant> All => new() { Slots[1].creature, Slots[2].creature, Slots[3].creature };
+    public List<Creature> AllCombatingCreatures => new() { TopCreature, MidCreature, BottomCreature };
     public ICombattantGroup Opponent { get; set; }
     /*
     public List<CreatureSlot> Slots => CreatureSlotReferencer.I.slots;
@@ -62,9 +61,9 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
     public void ItIsYourTurn(ICombattantGroup opponent)
     {
+        // TODO: check if everyone is dead
         Logger.Log($"<color=blue>Player Turn</color>", Logger.DomainType.System);
         Opponent = opponent;
-        actsLeft = 3;
         TopCreature.ReadyToAct();
         MidCreature.ReadyToAct();
         BottomCreature.ReadyToAct();
@@ -72,12 +71,40 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
     public void CreatureUsedTurn(Creature creature)
     {
-        // for now counter is enough.
-
-        actsLeft -= 1;
-        if (actsLeft <= 0)
+        if (ShouldTurnBeOver())
         {
             CombatManager.I.NextTurn();
+        }
+    }
+
+    private bool ShouldTurnBeOver()
+    {
+        bool turnShouldBeOver = true;
+        foreach (var combattant in AllCombatingCreatures)
+        {
+            if (combattant.CanAct)
+            {
+                turnShouldBeOver = false;
+            }
+        }
+
+        return turnShouldBeOver;
+    }
+
+    public void CreatureDied(Creature creatureThatDied)
+    {
+        bool allCombatantIsDead = true;
+        foreach (var creature in AllCombatingCreatures)
+        {
+            if (!creature.IsDead)
+            {
+                allCombatantIsDead = false;
+            }
+        }
+
+        if (allCombatantIsDead)
+        {
+            Logger.LogError("Player Died Completely", Logger.DomainType.Critical);
         }
     }
 }

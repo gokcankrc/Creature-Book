@@ -12,13 +12,14 @@ public abstract class Entity : MonoBehaviour, ICombattant
     public GameObject GameObject => gameObject;
     public virtual MonoBehaviour Behaviour => this;
     public bool IsDead => Stats.isDead;
+    protected abstract EntityData EntityData { get; }
 
-    public virtual void SetDataAndReset(EnemyData newEnemy)
+    public virtual void Reset()
     {
-        Stats = newEnemy.stats.DeepCopy();
+        Stats = EntityData.stats.DeepCopy();
         Stats.SetHealthMax();
-        gameObject.name = newEnemy.displayName;
-        image.sprite = newEnemy.sprite;
+        gameObject.name = EntityData.displayName;
+        image.sprite = EntityData.sprite;
         image.SetNativeSize();
         healthBar.Initialize(this);
     }

@@ -12,7 +12,9 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
     public CreatureData creatureData;
     public CreatureSlot currentSlot;
     private bool hasTurn;
-    private bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
+    public bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
+
+    protected override EntityData EntityData => creatureData;
 
     public override void TakeDamage(ICombattant attacker, Damage damage)
     {
@@ -20,7 +22,7 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
         base.TakeDamage(attacker, damage);
         if (IsDead)
         {
-            Logger.Log($"Creature death stuff here");
+            PlayerManager.I.CreatureDied(this);
         }
     }
 
@@ -28,8 +30,8 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         if (!CanAct) return;
         base.Act(opponents, action);
-        PlayerManager.I.CreatureUsedTurn(this);
         hasTurn = false;
+        PlayerManager.I.CreatureUsedTurn(this);
     }
 
     public void ReadyToAct()
