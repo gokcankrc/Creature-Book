@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Logger = Ky.Logger;
 
-public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     // TODO: Skills
     // TODO: Selecting
@@ -53,7 +53,7 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
         image.sprite = creatureData.sprite;
         image.SetNativeSize();
     }
-    bool CanEvolve (bool ignoreResources = false){
+    public bool CanEvolve (bool ignoreResources = false){
         if (ignoreResources){
             return (this.creatureData.nextEvo != null);
         }
@@ -81,6 +81,28 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
             this.Reset();
         }
     }
+    public string[] GenerateTooltipText(){
+        string [] result =  new string [2];
+
+        if (this.creatureData.stats.isDead){
+            result [0]="FAINTED<br>";
+            result [1]="<br>";
+        }
+        else {
+            result [0]="";
+            result [1]="";
+        }
+
+        result [0]+="HP: "+this.creatureData.stats.healthCurrent+" / "+this.creatureData.stats.healthMax.Calculate();
+        result [0]+="<br>Damage: ";
+        result [0]+="<br> Physical: "+this.creatureData.stats.physicalDamage.Calculate();
+        result [0]+="<br> Magical: "+this.creatureData.stats.magicDamage.Calculate();
+        /*result [1] goes into the second line, starts with a <br> to account for the HP line*/
+        result [1]+="<br>Armor: ";
+        result [1]+="<br> Physical: "+this.creatureData.stats.armor.Calculate();
+        result [1]+="<br> Magical: "+this.creatureData.stats.magicArmor.Calculate();
+        return result;
+    }
     public void OnBeginDrag(PointerEventData data)
     {
         
@@ -106,5 +128,8 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler
             transform.localPosition = Vector3.zero;
         }
         
+    }
+    public void OnPointerClick(PointerEventData eventData){
+        TooltipManager.I.ActivateOnPosition(this);
     }
 }

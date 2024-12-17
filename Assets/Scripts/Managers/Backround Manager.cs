@@ -11,9 +11,7 @@ public class BackroundManager : Singleton<BackroundManager>
     [SerializeField]GameObject [] prefabArr;
 
     void Start (){
-        print ("PD1");
         this.Setup(0);
-        print ("PD2");
     }
 
     public void TurnOnColoredParts(int lit){
