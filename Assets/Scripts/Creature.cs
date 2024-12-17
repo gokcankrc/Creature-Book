@@ -94,11 +94,11 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler,
         }
 
         result [0]+="HP: "+this.creatureData.stats.healthCurrent+" / "+this.creatureData.stats.healthMax.Calculate();
-        result [0]+="<br>Damage: ";
+        result [0]+="<br><br>Damage: ";
         result [0]+="<br> Physical: "+this.creatureData.stats.physicalDamage.Calculate();
         result [0]+="<br> Magical: "+this.creatureData.stats.magicDamage.Calculate();
-        /*result [1] goes into the second line, starts with a <br> to account for the HP line*/
-        result [1]+="<br>Armor: ";
+        /*result [1] goes into the second line, starts with a <br> to account for the HP line could add the name as the first line*/
+        result [1]+="<br><br>Armor: ";
         result [1]+="<br> Physical: "+this.creatureData.stats.armor.Calculate();
         result [1]+="<br> Magical: "+this.creatureData.stats.magicArmor.Calculate();
         return result;
