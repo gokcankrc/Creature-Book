@@ -3,10 +3,14 @@ using UnityEngine;
 using TMPro;
 public class ResourceManager : Singleton<ResourceManager>
 {
+    
     [SerializeField]TMP_Text blue,red,green,brown;
     public EnergyBundle resources = new EnergyBundle();
     public void Add (EnergyBundle added){
         this.resources += added;
+        this.UpdateDisplay();
+    }
+    void Start (){
         this.UpdateDisplay();
     }
     public void Subtract (EnergyBundle subtracted){

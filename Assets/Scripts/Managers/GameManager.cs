@@ -15,11 +15,14 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
+        /*
+        //deactivated the pressing of a cause we now have buttons
         if (Input.GetKeyDown(KeyCode.A))
         {
             EnemyManager.I.SetNextEnemy(EncounterManager.I.GetNextEnemy());
             CombatManager.I.StartCombat();
         }
+        */
     }
 
     public void ChangeState(State newState)

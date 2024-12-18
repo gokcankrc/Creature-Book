@@ -5,6 +5,7 @@ public class CombatManager : Singleton<CombatManager>
     public ICombattantGroup currentGroup;
 
     // TODO: When then enemy dies, a new one comes.
+    // don't think it's necessary: players will click the button "next" manually
     public Creature TopCreature => PlayerManager.I.TopCreature;
     public Creature MidCreature => PlayerManager.I.MidCreature;
     public Creature BottomCreature => PlayerManager.I.BottomCreature;
