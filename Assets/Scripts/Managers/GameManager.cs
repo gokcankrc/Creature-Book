@@ -13,18 +13,6 @@ public class GameManager : Singleton<GameManager>
         gameInitialized?.Invoke();
     }
 
-    private void Update()
-    {
-        /*
-        //deactivated the pressing of a cause we now have buttons
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            EnemyManager.I.SetNextEnemy(EncounterManager.I.GetNextEnemy());
-            CombatManager.I.StartCombat();
-        }
-        */
-    }
-
     public void ChangeState(State newState)
     {
         Ky.Logger.Log($"State: <color=white>{gameState.ToString()}</color> => <color=white>{newState.ToString()}</color>", Logger.DomainType.System);
