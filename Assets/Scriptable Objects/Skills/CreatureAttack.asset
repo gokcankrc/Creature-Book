@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5d4939d2e647daa427ad639a22d6cd, type: 3}
   m_Name: CreatureAttack
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: a1f5cf6b008bb704db857e28740ffab9, type: 3}
   physicalMult: 1
   magicMult: 1
   mainMult: 1
   sideMult: 0
+  cooldown: 0
