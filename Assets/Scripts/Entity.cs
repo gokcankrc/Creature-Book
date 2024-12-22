@@ -1,4 +1,3 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,6 +55,7 @@ public abstract class Entity : MonoBehaviour, ICombattant
         if (!CanTakeDamage()) return;
         var dmg = CalculateDamageTaken(Stats, damage);
         Stats.ChangeHealth(-dmg);
+        PopupManager.I.PopupDmgNumber(dmg, transform.position);
         Logger.Log($"Took {dmg} dmg, down to {Stats.healthCurrent}, Me: {gameObject.name}, Them: {attacker.GameObject.name}",
             Logger.DomainType.Combat);
         if (IsDead)
