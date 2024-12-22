@@ -19,7 +19,7 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
     public bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
     protected override EntityData EntityData => creatureData;
 
-    private void Start()
+    protected virtual void Start()
     {
         Reset();
     }
@@ -37,11 +37,6 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
         skillHandler0.Initialize(this, creatureData.skill0Data);
         skillHandler1.Initialize(this, creatureData.skill1Data);
         skillHandler2.Initialize(this, creatureData.skill2Data);
-    }
-
-    private void Update()
-    {
-        throw new NotImplementedException();
     }
 
     public override void TakeDamage(ICombattant attacker, Damage damage)

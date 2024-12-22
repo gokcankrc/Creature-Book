@@ -20,17 +20,17 @@ public abstract class Entity : MonoBehaviour, ICombattant
     public bool IsDead => Stats.isDead;
     protected abstract EntityData EntityData { get; }
 
-    private void Start()
+    protected virtual void Awake()
     {
         entityMovement = GetComponent<EntityMovement>();
     }
 
-    public void Activate()
+    public void Engage()
     {
         entityMovement.Activate();
     }
 
-    public void Deactivate()
+    public void Disengage()
     {
         entityMovement.Deactivate();
     }
@@ -60,8 +60,15 @@ public abstract class Entity : MonoBehaviour, ICombattant
             Logger.DomainType.Combat);
         if (IsDead)
         {
+            Died();
             Logger.Log($"{gameObject.name} died", Logger.DomainType.Combat);
         }
+    }
+
+    private void Died()
+    {
+        image.color = Color.gray;
+        entityMovement.Halt();
     }
 
     protected static float CalculateDamageTaken(Stats stats, Damage damage)
@@ -71,10 +78,14 @@ public abstract class Entity : MonoBehaviour, ICombattant
         return (phy + mag) * damage.mult;
     }
 
-    public virtual void ReadyToAct() { }
+    public virtual void ReadyToAct()
+    {
+        entityMovement.tired = false;
+    }
 
     public virtual void Act(ICombatAction action)
     {
         action.Act(this, group);
+        entityMovement.OnAttack();
     }
 }

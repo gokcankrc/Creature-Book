@@ -30,6 +30,7 @@ public class EnemyManager : Singleton<EnemyManager>, ICombattantGroup
     {
         var newEnemy = Instantiate(enemyPrefab, enemySlot.transform.position, Quaternion.identity, enemySlot.transform);
         newEnemy.SetDataAndReset(newEnemyData);
+        newEnemy.Engage();
         currentEnemy = newEnemy;
     }
 

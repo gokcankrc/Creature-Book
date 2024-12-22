@@ -30,17 +30,9 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
         GameManager.gameInitialized += OnGameInitialized;
     }
 
-    public void GetFightingCreatures()
-    {
-        slots = CreatureSlotReferencer.I.slots;
-        topCreature = slots[0].creature;
-        midCreature = slots[1].creature;
-        bottomCreature = slots[2].creature;
-    }
-
     private void OnGameInitialized()
     {
-        PlayerManager.I.GetFightingCreatures();
+        GetFightingCreatures();
         var minIndex = Mathf.Min(slots.Count, creatureDatas.Count);
         if (minIndex != 6)
             Debug.LogError($"Either slots or creatures are not enough");
@@ -50,15 +42,28 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
             newCreature.SetDataAndReset(creatureDatas[i]);
             slots[i].Initialize(newCreature);
         }
+
+        foreach (Creature creature in AllCreatures)
+        {
+            creature.Disengage();
+        }
+    }
+
+    public void GetFightingCreatures()
+    {
+        slots = CreatureSlotReferencer.I.slots;
+        topCreature = slots[0].creature;
+        midCreature = slots[1].creature;
+        bottomCreature = slots[2].creature;
     }
 
     private void OnCombatStart()
     {
         foreach (var creature in AllCreatures)
-            creature.Deactivate();
+            creature.Disengage();
 
         foreach (var creature in AllCombatingCreatures)
-            creature.Activate();
+            creature.Engage();
     }
 
     private void OnCombatEnd()
@@ -67,7 +72,7 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
         midCreature.Reset();
         bottomCreature.Reset();
         foreach (var creature in AllCombatingCreatures)
-            creature.Deactivate();
+            creature.Disengage();
     }
 
     public void ItIsYourTurn(ICombattantGroup opponent)

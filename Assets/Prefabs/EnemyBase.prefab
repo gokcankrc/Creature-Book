@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6736781029607544760, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+      propertyPath: attackDistance
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 6979141717766532744, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -111,12 +115,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1237470363127803320}
   m_SourcePrefab: {fileID: 100100000, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
---- !u!114 &4355785122802595155 stripped
+--- !u!114 &4838543077383688154 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6979141717766532744, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2273695885590287361, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
   m_PrefabInstance: {fileID: 6676655817975995355}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8128751050617165098}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -150,8 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98450ae874f6462ea76fc100d609b25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 4355785122802595155}
+  image: {fileID: 4838543077383688154}
   healthBar: {fileID: 7133970277545822816}
+  entityMovement: {fileID: 0}
   reward:
     blue: 0
     red: 0
