@@ -4,14 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Ky;
-public class TooltipManager : Singleton<TooltipManager>
+using UnityEngine.EventSystems;
+
+public class TooltipManager : Singleton<TooltipManager>, IPointerEnterHandler, IPointerExitHandler
 {
    [SerializeField]GameObject tooltipBox;
    [SerializeField]float tooltipOffset;
    [SerializeField]TMP_Text tooltipText,tooltipText2;
    [SerializeField]Button evoButton;
    Creature selectedCreature;
-   public void ActivateOnPosition(Creature selected){
+
+   public bool mouseIsOver;
+   public void ActivateOnPosition(Entity selectedEntity){
+	   if (selectedEntity is not Creature selected)
+	   {
+		   return;
+	   }
 		/*used to receive all this data as method arguments, now we just retreive all from the Creature Class*/
 		Vector3 position = selected.transform.position;
 
@@ -30,7 +38,11 @@ public class TooltipManager : Singleton<TooltipManager>
 	   if (Input.GetButtonDown("Fire2")) {
 			this.Hide();
 	   }
-	}
+	   if (Input.GetMouseButtonDown(0) && !mouseIsOver)
+	   {
+		   Hide();
+	   }
+   }
 
    public void Hide(){
 	   this.tooltipBox.SetActive(false);
@@ -38,5 +50,14 @@ public class TooltipManager : Singleton<TooltipManager>
    public void EvolveSelected(){
 		this.selectedCreature.Evolve();
 		this.evoButton.interactable = this.selectedCreature.CanEvolve(false);
+   }
+
+   public void OnPointerEnter(PointerEventData eventData)
+   {
+	   mouseIsOver = true;
+   }
+   public void OnPointerExit(PointerEventData eventData)
+   {
+	   mouseIsOver = false;
    }
 }

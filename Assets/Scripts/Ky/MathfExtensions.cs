@@ -97,12 +97,12 @@ namespace Ky
 
         public static Vector2 GetRandomPointInUnitCircle()
         {
-            while (true)
-            {
-                float x = Random.Range(-1f, 1f);
-                float y = Random.Range(-1f, 1f);
-                if (x * x + y * y <= 1) return new Vector2(x, y);
-            }
+            return Random.insideUnitCircle;
+        }
+
+        public static Vector3 GetRandomPointInUnitSphere()
+        {
+            return Random.insideUnitSphere;
         }
 
         /// <summary>

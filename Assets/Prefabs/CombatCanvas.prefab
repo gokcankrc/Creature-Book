@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDelay: 1
   enemyPrefab: {fileID: 8343523819210056708, guid: 3b791be7563896542bd6e777a85bf10c, type: 3}
-  debugEnemyAttack: {fileID: 11400000, guid: 3c7b2ed803ed0a54b9025a382d3feb06, type: 2}
+  debugEnemyAttack: {fileID: 0}
   enemySlot: {fileID: 4032916858732465996}
 --- !u!1 &281953201824431110
 GameObject:
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 54.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1883,7 +1883,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 22.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

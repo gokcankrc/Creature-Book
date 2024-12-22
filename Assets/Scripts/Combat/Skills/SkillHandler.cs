@@ -45,7 +45,7 @@ public abstract class SkillHandler : MonoBehaviour, IPointerClickHandler
 
     private bool CanAct()
     {
-        return cooldownCurrent <= 0;
+        return cooldownCurrent <= 0 && entity.hasTurn;
     }
 
     public void OnReadyToAct()

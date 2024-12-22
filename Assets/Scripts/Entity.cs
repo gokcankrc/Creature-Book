@@ -12,7 +12,10 @@ public abstract class Entity : MonoBehaviour, ICombattant
     [PropertyOrder(10)] public Image image;
     [PropertyOrder(10)] public HealthBar healthBar;
 
+    public InfoBox infoBox;
     public EntityMovement entityMovement;
+
+    public bool hasTurn;
 
     public GameObject GameObject => gameObject;
     public virtual MonoBehaviour Behaviour => this;
@@ -22,6 +25,7 @@ public abstract class Entity : MonoBehaviour, ICombattant
     protected virtual void Awake()
     {
         entityMovement = GetComponent<EntityMovement>();
+        infoBox.Init(this);
     }
 
     public void Engage()
@@ -58,6 +62,7 @@ public abstract class Entity : MonoBehaviour, ICombattant
         PopupManager.I.PopupDmgNumber(dmg, transform.position);
         Logger.Log($"Took {dmg} dmg, down to {Stats.healthCurrent}, Me: {gameObject.name}, Them: {attacker.GameObject.name}",
             Logger.DomainType.Combat);
+        entityMovement.OnDamageTaken();
         if (IsDead)
         {
             Died();
@@ -87,5 +92,10 @@ public abstract class Entity : MonoBehaviour, ICombattant
     {
         action.Act(this, group);
         entityMovement.OnAttack();
+    }
+
+    public void OnInfo()
+    {
+        TooltipManager.I.ActivateOnPosition(this);
     }
 }

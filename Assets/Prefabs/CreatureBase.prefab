@@ -234,7 +234,27 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3199560234144075505, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1782179638875917407}
+    - targetCorrespondingSourceObject: {fileID: 4993386822012921018, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7224391814581298434}
   m_SourcePrefab: {fileID: 100100000, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+--- !u!1 &711356662966679926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4993386822012921018, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+  m_PrefabInstance: {fileID: 5517804298975452620}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7224391814581298434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711356662966679926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80242e6cfca042e4585a9e4abf45b4c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1292242140089748084 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6736781029607544760, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
@@ -276,6 +296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 5989479207345736141}
   healthBar: {fileID: 8303484301381422199}
+  infoBox: {fileID: 7224391814581298434}
   entityMovement: {fileID: 1292242140089748084}
   currentSlot: {fileID: 0}
   creatureData: {fileID: 0}

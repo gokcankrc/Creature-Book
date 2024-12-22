@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     // TODO: Skills
     // TODO: Selecting
@@ -13,8 +13,6 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
     [PropertyOrder(10)] public SkillHandler skillHandler0;
     [PropertyOrder(10)] public SkillHandler skillHandler1;
     [PropertyOrder(10)] public SkillHandler skillHandler2;
-
-    private bool hasTurn;
 
     public bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
     protected override EntityData EntityData => creatureData;
@@ -105,7 +103,7 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         string[] result = new string [2];
 
-        if (creatureData.stats.isDead)
+        if (Stats.isDead)
         {
             result[0] = "FAINTED<br>";
             result[1] = "<br>";
@@ -116,14 +114,12 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
             result[1] = "";
         }
 
-        result[0] += "HP: " + creatureData.stats.healthCurrent + " / " + creatureData.stats.healthMax.Calculate();
-        result[0] += "<br><br>Damage: ";
-        result[0] += "<br> Physical: " + creatureData.stats.physicalDamage.Calculate();
-        result[0] += "<br> Magical: " + creatureData.stats.magicDamage.Calculate();
+        result[1] += "HP: " + Stats.healthCurrent + " / " + Stats.healthMax.Calculate();
+        result[1] += "<br> Atk: " + Stats.physicalDamage.Calculate();
+        result[1] += "<br> M.Atk: " + Stats.magicDamage.Calculate();
         /*result [1] goes into the second line, starts with a <br> to account for the HP line could add the name as the first line*/
-        result[1] += "<br><br>Armor: ";
-        result[1] += "<br> Physical: " + creatureData.stats.armor.Calculate();
-        result[1] += "<br> Magical: " + creatureData.stats.magicArmor.Calculate();
+        result[1] += "<br> Def: " + Stats.armor.Calculate();
+        result[1] += "<br> M.Def: " + Stats.magicArmor.Calculate();
         return result;
     }
 
@@ -150,10 +146,5 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
         {
             transform.localPosition = Vector3.zero;
         }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        TooltipManager.I.ActivateOnPosition(this);
     }
 }
