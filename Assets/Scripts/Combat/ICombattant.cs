@@ -6,7 +6,8 @@ public interface ICombattant
     public MonoBehaviour Behaviour { get; }
 
     public void TakeDamage(ICombattant attacker, Damage damage);
-    public void Act(ICombattantGroup opponent, ICombatAction action);
+    public void ReadyToAct();
+    public void Act(ICombatAction action);
 
     public Stats Stats { get; }
     public bool IsDead => Stats.isDead;

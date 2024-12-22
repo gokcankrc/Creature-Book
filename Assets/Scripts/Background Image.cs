@@ -12,16 +12,11 @@ public class BackgroundImage : MonoBehaviour
 			if (current < lit){
 				img.SetActive(true);
 				this.btnArray[current].interactable = false;
-				
 			}
-			else{
-				if (current == lit){
-					this.btnArray[current].interactable = true;
-				}
-				else {
-					this.btnArray[current].interactable = false;
-				}
-				
+			else
+			{
+				btnArray[current].interactable = current == lit;
+
 				img.SetActive(false);
 			}
 			current++;

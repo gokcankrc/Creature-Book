@@ -6,9 +6,11 @@ using Logger = Ky.Logger;
 
 public abstract class Entity : MonoBehaviour, ICombattant
 {
-    public Image image;
-    public HealthBar healthBar;
-    [ShowInInspector] public Stats Stats { get; protected set; }
+    public ICombattantGroup group;
+    [PropertyOrder(0)] [ShowInInspector] public Stats Stats { get; protected set; }
+    [Header("References")]
+    [PropertyOrder(10)] public Image image;
+    [PropertyOrder(10)] public HealthBar healthBar;
 
     public GameObject GameObject => gameObject;
     public virtual MonoBehaviour Behaviour => this;
@@ -51,8 +53,10 @@ public abstract class Entity : MonoBehaviour, ICombattant
         return (phy + mag) * damage.mult;
     }
 
-    public virtual void Act(ICombattantGroup opponents, ICombatAction action)
+    public virtual void ReadyToAct() { }
+
+    public virtual void Act(ICombatAction action)
     {
-        action.Act(this, opponents);
+        action.Act(this, group);
     }
 }

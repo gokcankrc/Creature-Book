@@ -43,3 +43,6 @@ MonoBehaviour:
     red: 0
     green: 0
     brown: 0
+  skill0Data: {fileID: 11400000, guid: 6480b044ec21c3f46a6c45733129b459, type: 2}
+  skill1Data: {fileID: 0}
+  skill2Data: {fileID: 0}

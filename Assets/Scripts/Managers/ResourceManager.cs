@@ -3,34 +3,32 @@ using UnityEngine;
 using TMPro;
 public class ResourceManager : Singleton<ResourceManager>
 {
-    
     [SerializeField]TMP_Text blue,red,green,brown;
     public EnergyBundle resources = new EnergyBundle();
     public void Add (EnergyBundle added){
-        this.resources += added;
-        this.UpdateDisplay();
+        resources += added;
+        UpdateDisplay();
     }
     void Start (){
-        this.UpdateDisplay();
+        UpdateDisplay();
     }
     public void Subtract (EnergyBundle subtracted){
-        this.resources -= subtracted;
-        this.UpdateDisplay();
+        resources -= subtracted;
+        UpdateDisplay();
     }
     public bool IsHigher (EnergyBundle comparison){
-        return (this.resources >= comparison);
+        return (resources >= comparison);
     }
-    public void UpdateDisplay(){
-        if (this.blue is null ||this.red is null||this.green is null||this.brown is null){
+    public void UpdateDisplay()
+    {
+        if (blue is null ||red is null||green is null||brown is null){
             Debug.LogWarning("A Display Text is missing from the ResourceManager");
+            return;
         }
-        else {
-            this.blue.SetText(""+this.resources.blue);
-            this.red.SetText(""+this.resources.red);
-            this.green.SetText(""+this.resources.green);
-            this.brown.SetText(""+this.resources.brown);
-        }
-        
-    }
 
+        blue.SetText(""+resources.blue);
+        red.SetText(""+resources.red);
+        green.SetText(""+resources.green);
+        brown.SetText(""+resources.brown);
+    }
 }

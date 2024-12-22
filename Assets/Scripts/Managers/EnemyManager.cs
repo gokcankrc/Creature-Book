@@ -9,7 +9,7 @@ public class EnemyManager : Singleton<EnemyManager>, ICombattantGroup
     public static Enemy currentEnemy;
     public float attackDelay;
     public Enemy enemyPrefab;
-    public Skill debugEnemyAttack;
+    public SkillHandler debugEnemyAttack;
     public EnemySlot enemySlot;
 
     public ICombattant Main => currentEnemy;
@@ -37,12 +37,12 @@ public class EnemyManager : Singleton<EnemyManager>, ICombattantGroup
     {
         Opponent = opponent;
         Logger.Log($"<color=red>Enemy Turn</color>", Logger.DomainType.System);
-        StartCoroutine(Delayed());
+        StartCoroutine(delayed());
 
-        IEnumerator Delayed()
+        IEnumerator delayed()
         {
             yield return new WaitForSeconds(attackDelay);
-            currentEnemy.Act(opponent, debugEnemyAttack);
+            currentEnemy.ReadyToAct();
             CombatManager.I.NextTurn();
         }
     }

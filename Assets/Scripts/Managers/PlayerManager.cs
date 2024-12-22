@@ -13,6 +13,7 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
     public List<ICombattant> Side => new() { TopCreature, BottomCreature };
     public List<ICombattant> All => new() { TopCreature, MidCreature, BottomCreature };
     public List<Creature> AllCombatingCreatures => new() { TopCreature, MidCreature, BottomCreature };
+
     public ICombattantGroup Opponent { get; set; }
     /*
     public List<CreatureSlot> Slots => CreatureSlotReferencer.I.slots;
@@ -31,7 +32,9 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 
         GameManager.gameInitialized += OnGameInitialized;
     }
-    public void GetFightingCreatures(){
+
+    public void GetFightingCreatures()
+    {
         Slots = CreatureSlotReferencer.I.slots;
         TopCreature = Slots[0].creature;
         MidCreature = Slots[1].creature;
@@ -50,13 +53,6 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
             newCreature.SetDataAndReset(creatureDatas[i]);
             Slots[i].Initialize(newCreature);
         }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q)) TopCreature.Act(Opponent, debugCreatureAttack);
-        if (Input.GetKeyDown(KeyCode.W)) MidCreature.Act(Opponent, debugCreatureAttack);
-        if (Input.GetKeyDown(KeyCode.E)) BottomCreature.Act(Opponent, debugCreatureAttack);
     }
 
     public void ItIsYourTurn(ICombattantGroup opponent)

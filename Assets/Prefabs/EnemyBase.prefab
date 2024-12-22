@@ -104,6 +104,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3199560234144075505, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8343523819210056708}
+    - targetCorrespondingSourceObject: {fileID: 3199560234144075505, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8860543812291988812}
+    - targetCorrespondingSourceObject: {fileID: 3199560234144075505, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1237470363127803320}
   m_SourcePrefab: {fileID: 100100000, guid: ac778affa7a623b48b380fb79e14ac1b, type: 3}
 --- !u!114 &4355785122802595155 stripped
 MonoBehaviour:
@@ -146,3 +152,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 4355785122802595155}
   healthBar: {fileID: 7133970277545822816}
+  reward:
+    blue: 0
+    red: 0
+    green: 0
+    brown: 0
+--- !u!114 &8860543812291988812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8128751050617165098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76645f06740c49dcba65cb501351de11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownMax: 0
+  cooldownCurrent: 0
+  entity: {fileID: 0}
+  skill: {fileID: 0}
+--- !u!114 &1237470363127803320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8128751050617165098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a7ad80182d048e1bd7f0ff79d17dac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

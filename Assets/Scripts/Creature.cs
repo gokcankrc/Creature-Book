@@ -1,16 +1,17 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Logger = Ky.Logger;
 
-public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     // TODO: Skills
     // TODO: Selecting
     // TODO: Popups
-    public CreatureData creatureData;
-    public CreatureSlot currentSlot;
+    [PropertyOrder(0)] public CreatureSlot currentSlot;
+    [PropertyOrder(0)] public CreatureData creatureData;
+    [PropertyOrder(10)] public SkillHandler skillHandler0;
+    [PropertyOrder(10)] public SkillHandler skillHandler1;
+    [PropertyOrder(10)] public SkillHandler skillHandler2;
     private bool hasTurn;
     public bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
 
@@ -26,17 +27,18 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler,
         }
     }
 
-    public override void Act(ICombattantGroup opponents, ICombatAction action)
+    public override void ReadyToAct()
     {
-        if (!CanAct) return;
-        base.Act(opponents, action);
-        hasTurn = false;
-        PlayerManager.I.CreatureUsedTurn(this);
+        base.ReadyToAct();
+        hasTurn = true;
     }
 
-    public void ReadyToAct()
+    public override void Act(ICombatAction action)
     {
-        hasTurn = true;
+        if (!CanAct) return;
+        base.Act(action);
+        hasTurn = false;
+        PlayerManager.I.CreatureUsedTurn(this);
     }
 
     public void SetDataAndReset(CreatureData newCreatureData)
@@ -45,91 +47,100 @@ public class Creature : Entity,IBeginDragHandler, IDragHandler, IEndDragHandler,
         Reset();
     }
 
-    public void Reset()
+    public override void Reset()
     {
-        Stats = creatureData.stats.DeepCopy();
-        Stats.SetHealthMax();
-        gameObject.name = creatureData.displayName;
-        image.sprite = creatureData.sprite;
-        image.SetNativeSize();
+        base.Reset();
+        group = PlayerManager.I;
+        skillHandler0.Initialize(this, creatureData.skill0Data);
+        skillHandler1.Initialize(this, creatureData.skill1Data);
+        skillHandler2.Initialize(this, creatureData.skill2Data);
     }
-    public bool CanEvolve (bool ignoreResources = false){
-        if (ignoreResources){
-            return (this.creatureData.nextEvo != null);
-        }
-        else {
-            return (this.creatureData.nextEvo != null && ResourceManager.I.IsHigher(this.creatureData.energyForNextEvo));
-        }
-        
 
+    public bool CanEvolve(bool ignoreResources = false)
+    {
+        if (ignoreResources)
+        {
+            return (creatureData.nextEvo != null);
+        }
+        else
+        {
+            return (creatureData.nextEvo != null && ResourceManager.I.IsHigher(creatureData.energyForNextEvo));
+        }
     }
 
     [Button]
-    public void DebugEvolve() { 
-        this.Evolve(false);
+    public void DebugEvolve()
+    {
+        Evolve(false);
     }
-    public void Evolve (bool ignoreResources = false){
+
+    public void Evolve(bool ignoreResources = false)
+    {
         if (GameManager.gameState == GameManager.State.InCombat) return;
-        if (this.CanEvolve(ignoreResources)){
-            if (ignoreResources){
-                this.creatureData = this.creatureData.nextEvo;
-            }
-            else {
-                ResourceManager.I.Subtract(this.creatureData.energyForNextEvo);
-                this.creatureData = this.creatureData.nextEvo;
-            }
-            this.Reset();
+        if (CanEvolve(ignoreResources))
+        {
+            if (!ignoreResources)
+                ResourceManager.I.Subtract(creatureData.energyForNextEvo);
+
+            creatureData = creatureData.nextEvo;
+
+            Reset();
         }
     }
-    public string[] GenerateTooltipText(){
-        string [] result =  new string [2];
 
-        if (this.creatureData.stats.isDead){
-            result [0]="FAINTED<br>";
-            result [1]="<br>";
+    public string[] GenerateTooltipText()
+    {
+        string[] result = new string [2];
+
+        if (creatureData.stats.isDead)
+        {
+            result[0] = "FAINTED<br>";
+            result[1] = "<br>";
         }
-        else {
-            result [0]="";
-            result [1]="";
+        else
+        {
+            result[0] = "";
+            result[1] = "";
         }
 
-        result [0]+="HP: "+this.creatureData.stats.healthCurrent+" / "+this.creatureData.stats.healthMax.Calculate();
-        result [0]+="<br><br>Damage: ";
-        result [0]+="<br> Physical: "+this.creatureData.stats.physicalDamage.Calculate();
-        result [0]+="<br> Magical: "+this.creatureData.stats.magicDamage.Calculate();
+        result[0] += "HP: " + creatureData.stats.healthCurrent + " / " + creatureData.stats.healthMax.Calculate();
+        result[0] += "<br><br>Damage: ";
+        result[0] += "<br> Physical: " + creatureData.stats.physicalDamage.Calculate();
+        result[0] += "<br> Magical: " + creatureData.stats.magicDamage.Calculate();
         /*result [1] goes into the second line, starts with a <br> to account for the HP line could add the name as the first line*/
-        result [1]+="<br><br>Armor: ";
-        result [1]+="<br> Physical: "+this.creatureData.stats.armor.Calculate();
-        result [1]+="<br> Magical: "+this.creatureData.stats.magicArmor.Calculate();
+        result[1] += "<br><br>Armor: ";
+        result[1] += "<br> Physical: " + creatureData.stats.armor.Calculate();
+        result[1] += "<br> Magical: " + creatureData.stats.magicArmor.Calculate();
         return result;
     }
-    public void OnBeginDrag(PointerEventData data)
-    {
-        
-        
-    }
+
+    public void OnBeginDrag(PointerEventData data) { }
 
     public void OnDrag(PointerEventData data)
     {
         if (GameManager.gameState == GameManager.State.InCombat) return;
-        if (data.dragging){
-            transform.position = new Vector3(data.position.x,data.position.y,0);
+        if (data.dragging)
+        {
+            transform.position = new Vector3(data.position.x, data.position.y, 0);
         }
     }
 
     public void OnEndDrag(PointerEventData data)
     {
         if (GameManager.gameState == GameManager.State.InCombat) return;
-        CreatureSlot newSlot = CreatureSlotReferencer.I.GetNearestSlot(this.transform.position);
-        if (newSlot != this.currentSlot && newSlot != null){
-           CreatureSlot.Swap(newSlot, this.currentSlot);
+        CreatureSlot newSlot = CreatureSlotReferencer.I.GetNearestSlot(transform.position);
+        if (newSlot != currentSlot && newSlot != null)
+        {
+            CreatureSlot.Swap(newSlot, currentSlot);
         }
-        else {
+        else
+        {
             transform.localPosition = Vector3.zero;
         }
-        
     }
-    public void OnPointerClick(PointerEventData eventData){
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
         TooltipManager.I.ActivateOnPosition(this);
     }
 }
