@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,33 +13,15 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
     [PropertyOrder(10)] public SkillHandler skillHandler0;
     [PropertyOrder(10)] public SkillHandler skillHandler1;
     [PropertyOrder(10)] public SkillHandler skillHandler2;
-    private bool hasTurn;
-    public bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
 
+    private bool hasTurn;
+
+    public bool CanAct => hasTurn & !Stats.isDead & CombatManager.I.InCombat;
     protected override EntityData EntityData => creatureData;
 
-    public override void TakeDamage(ICombattant attacker, Damage damage)
+    private void Start()
     {
-        if (!CanTakeDamage()) return;
-        base.TakeDamage(attacker, damage);
-        if (IsDead)
-        {
-            PlayerManager.I.CreatureDied(this);
-        }
-    }
-
-    public override void ReadyToAct()
-    {
-        base.ReadyToAct();
-        hasTurn = true;
-    }
-
-    public override void Act(ICombatAction action)
-    {
-        if (!CanAct) return;
-        base.Act(action);
-        hasTurn = false;
-        PlayerManager.I.CreatureUsedTurn(this);
+        Reset();
     }
 
     public void SetDataAndReset(CreatureData newCreatureData)
@@ -54,6 +37,41 @@ public class Creature : Entity, IBeginDragHandler, IDragHandler, IEndDragHandler
         skillHandler0.Initialize(this, creatureData.skill0Data);
         skillHandler1.Initialize(this, creatureData.skill1Data);
         skillHandler2.Initialize(this, creatureData.skill2Data);
+    }
+
+    private void Update()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void TakeDamage(ICombattant attacker, Damage damage)
+    {
+        if (!CanTakeDamage()) return;
+        base.TakeDamage(attacker, damage);
+        if (IsDead)
+        {
+            PlayerManager.I.CreatureDied(this);
+        }
+    }
+
+    public override void ReadyToAct()
+    {
+        base.ReadyToAct();
+        skillHandler0.OnReadyToAct();
+        skillHandler1.OnReadyToAct();
+        skillHandler2.OnReadyToAct();
+        hasTurn = true;
+    }
+
+    public override void Act(ICombatAction action)
+    {
+        if (!CanAct) return;
+        base.Act(action);
+        hasTurn = false;
+        skillHandler0.OnActed();
+        skillHandler1.OnActed();
+        skillHandler2.OnActed();
+        PlayerManager.I.CreatureUsedTurn(this);
     }
 
     public bool CanEvolve(bool ignoreResources = false)

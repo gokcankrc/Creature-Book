@@ -1,58 +1,73 @@
 using System.Collections.Generic;
+using System.Linq;
 using Ky;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Logger = Ky.Logger;
 
 public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
 {
     public Creature creaturePrefab;
-    public Skill debugCreatureAttack;
     public List<CreatureData> creatureDatas;
-
-    public ICombattant Main => MidCreature;
-    public List<ICombattant> Side => new() { TopCreature, BottomCreature };
-    public List<ICombattant> All => new() { TopCreature, MidCreature, BottomCreature };
-    public List<Creature> AllCombatingCreatures => new() { TopCreature, MidCreature, BottomCreature };
+    [FormerlySerializedAs("Slots")] public List<CreatureSlot> slots;
+    [ReadOnly] public Creature topCreature;
+    [ReadOnly] public Creature midCreature;
+    [ReadOnly] public Creature bottomCreature;
 
     public ICombattantGroup Opponent { get; set; }
-    /*
-    public List<CreatureSlot> Slots => CreatureSlotReferencer.I.slots;
-    public Creature TopCreature => Slots[0].creature;
-    public Creature MidCreature => Slots[1].creature;
-    public Creature BottomCreature => Slots[2].creature;
-    */
-    public List<CreatureSlot> Slots;
-    public Creature TopCreature;
-    public Creature MidCreature;
-    public Creature BottomCreature;
 
-    protected override void Awake()
+    public ICombattant Main => midCreature;
+    public List<ICombattant> Side => new() { topCreature, bottomCreature };
+    public List<ICombattant> All => new() { topCreature, midCreature, bottomCreature };
+    public List<Creature> AllCombatingCreatures => new() { topCreature, midCreature, bottomCreature };
+    public List<Creature> AllCreatures => slots.Select(slot => slot.creature).ToList();
+
+    protected virtual void Start()
     {
-        base.Awake();
-
+        CombatManager.I.combatStarting += OnCombatStart;
+        CombatManager.I.combatEnding += OnCombatEnd;
         GameManager.gameInitialized += OnGameInitialized;
     }
 
     public void GetFightingCreatures()
     {
-        Slots = CreatureSlotReferencer.I.slots;
-        TopCreature = Slots[0].creature;
-        MidCreature = Slots[1].creature;
-        BottomCreature = Slots[2].creature;
+        slots = CreatureSlotReferencer.I.slots;
+        topCreature = slots[0].creature;
+        midCreature = slots[1].creature;
+        bottomCreature = slots[2].creature;
     }
 
     private void OnGameInitialized()
     {
         PlayerManager.I.GetFightingCreatures();
-        var minIndex = Mathf.Min(Slots.Count, creatureDatas.Count);
+        var minIndex = Mathf.Min(slots.Count, creatureDatas.Count);
         if (minIndex != 6)
             Debug.LogError($"Either slots or creatures are not enough");
         for (int i = 0; i < minIndex; i++)
         {
-            var newCreature = Instantiate(creaturePrefab, Slots[i].transform);
+            var newCreature = Instantiate(creaturePrefab, slots[i].transform);
             newCreature.SetDataAndReset(creatureDatas[i]);
-            Slots[i].Initialize(newCreature);
+            slots[i].Initialize(newCreature);
         }
+    }
+
+    private void OnCombatStart()
+    {
+        foreach (var creature in AllCreatures)
+            creature.Deactivate();
+
+        foreach (var creature in AllCombatingCreatures)
+            creature.Activate();
+    }
+
+    private void OnCombatEnd()
+    {
+        topCreature.Reset();
+        midCreature.Reset();
+        bottomCreature.Reset();
+        foreach (var creature in AllCombatingCreatures)
+            creature.Deactivate();
     }
 
     public void ItIsYourTurn(ICombattantGroup opponent)
@@ -60,9 +75,9 @@ public class PlayerManager : Singleton<PlayerManager>, ICombattantGroup
         // TODO: check if everyone is dead
         Logger.Log($"<color=blue>Player Turn</color>", Logger.DomainType.System);
         Opponent = opponent;
-        TopCreature.ReadyToAct();
-        MidCreature.ReadyToAct();
-        BottomCreature.ReadyToAct();
+        topCreature.ReadyToAct();
+        midCreature.ReadyToAct();
+        bottomCreature.ReadyToAct();
     }
 
     public void CreatureUsedTurn(Creature creature)

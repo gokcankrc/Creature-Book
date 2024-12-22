@@ -1,9 +1,10 @@
-using Ky;
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 using Logger = Ky.Logger;
 
+[RequireComponent(typeof(EntityMovement))]
 public abstract class Entity : MonoBehaviour, ICombattant
 {
     public ICombattantGroup group;
@@ -12,10 +13,27 @@ public abstract class Entity : MonoBehaviour, ICombattant
     [PropertyOrder(10)] public Image image;
     [PropertyOrder(10)] public HealthBar healthBar;
 
+    public EntityMovement entityMovement;
+
     public GameObject GameObject => gameObject;
     public virtual MonoBehaviour Behaviour => this;
     public bool IsDead => Stats.isDead;
     protected abstract EntityData EntityData { get; }
+
+    private void Start()
+    {
+        entityMovement = GetComponent<EntityMovement>();
+    }
+
+    public void Activate()
+    {
+        entityMovement.Activate();
+    }
+
+    public void Deactivate()
+    {
+        entityMovement.Deactivate();
+    }
 
     public virtual void Reset()
     {

@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Enemy 1
   stats:
     healthMax:
-      baseValue: 100
+      baseValue: 1000
       additiveMult: 0
       multiplicativeMult: 1
     healthCurrent: 0

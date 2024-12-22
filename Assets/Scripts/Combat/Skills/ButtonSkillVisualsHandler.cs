@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class ButtonSkillVisualsHandler : SkillVisualsHandler
 {
     public Image image;
+    public Image radialFill;
     public TextMeshProUGUI tmp;
 
     public override void Init(InitArgs args)
@@ -18,11 +19,12 @@ public class ButtonSkillVisualsHandler : SkillVisualsHandler
             image.enabled = false;
             tmp.text = "";
         }
+        Refresh(new Args(0, 0));
     }
 
     public override void Refresh(Args args)
     {
-        image.fillAmount = args.cooldownRatio;
+        radialFill.fillAmount = args.cooldownRatio;
         tmp.text = args.cooldownCurrent > 0 ? args.cooldownCurrent.ToString() : "";
     }
 }

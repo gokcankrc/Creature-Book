@@ -38,7 +38,9 @@ public abstract class SkillHandler : MonoBehaviour, IPointerClickHandler
     {
         if (!CanAct()) return;
 
+        cooldownCurrent = cooldownMax;
         entity.Act(skill);
+        Refresh();
     }
 
     private bool CanAct()
@@ -46,7 +48,7 @@ public abstract class SkillHandler : MonoBehaviour, IPointerClickHandler
         return cooldownCurrent <= 0;
     }
 
-    public void OnTurnPass()
+    public void OnReadyToAct()
     {
         if (!Active) return;
         cooldownCurrent -= 1;
@@ -54,10 +56,21 @@ public abstract class SkillHandler : MonoBehaviour, IPointerClickHandler
         if (cooldownCurrent <= 0) { }
     }
 
-    private void Refresh()
+    public virtual void OnActed() { }
+
+    protected virtual void Refresh()
     {
         if (!Active) return;
-        var ratio = (float)cooldownCurrent / cooldownMax;
+        float ratio;
+        if (cooldownMax == 0)
+        {
+            ratio = 0;
+        }
+        else
+        {
+            ratio = (float)cooldownCurrent / cooldownMax;
+        }
+
         visualsHandler.Refresh(new SkillVisualsHandler.Args(cooldownCurrent, ratio));
     }
 }

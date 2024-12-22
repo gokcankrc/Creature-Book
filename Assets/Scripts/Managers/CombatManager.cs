@@ -1,12 +1,15 @@
+using System;
 using Ky;
 
 public class CombatManager : Singleton<CombatManager>
 {
     public ICombattantGroup currentGroup;
+    public Action combatStarting;
+    public Action combatEnding;
 
-    public Creature TopCreature => PlayerManager.I.TopCreature;
-    public Creature MidCreature => PlayerManager.I.MidCreature;
-    public Creature BottomCreature => PlayerManager.I.BottomCreature;
+    public Creature TopCreature => PlayerManager.I.topCreature;
+    public Creature MidCreature => PlayerManager.I.midCreature;
+    public Creature BottomCreature => PlayerManager.I.bottomCreature;
     public ICombattantGroup PlayerGroup => PlayerManager.I;
     public ICombattant Enemy => EnemyManager.currentEnemy;
     public ICombattantGroup EnemyGroup => EnemyManager.I;
@@ -19,8 +22,7 @@ public class CombatManager : Singleton<CombatManager>
         PlayerManager.I.GetFightingCreatures();
         currentGroup = PlayerManager.I;
         GameManager.I.ChangeState(GameManager.State.InCombat);
-        EncounterManager.I.LevelIndex++;
-        
+        combatStarting?.Invoke();
         NextTurn();
     }
 
@@ -33,7 +35,9 @@ public class CombatManager : Singleton<CombatManager>
 
     public void CombatEnded()
     {
+        combatEnding?.Invoke();
         GameManager.I.ChangeState(GameManager.State.Waiting);
         BackroundManager.I.TurnOnColoredParts(EncounterManager.I.LevelIndex);
+        EncounterManager.I.LevelIndex++;
     }
 }
